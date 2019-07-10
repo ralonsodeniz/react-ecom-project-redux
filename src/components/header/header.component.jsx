@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux"; // connect is a HOC (higher order component) that lets us moddify our component to have access to things related with redux, included the store
 // HOC are functions that takes components as arguments and then returns you a new modified component
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import "./header.styles.scss";
 // this is a special syntax in React for importing SVG.
 // The ReactComponent import name is special and tells Create React App that you want a React component that renders an SVG
 import { ReactComponent as Logo } from "../../assets/crown.svg";
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
   <div className="header">
     <Link className="logo-container" to="/">
       <Logo className="logo" />
@@ -29,13 +31,17 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
+    {hidden ? null : <CartDropdown />}
   </div>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  // this is a way to deconstruct nested values, from state we deconstruct user and cart and from user we want currentUser and from cart we want hidden
   // the state is the store (the root reducer) then we have the key of the reducer where the property we want its in, and then the property we want to get the value
-  currentUser: state.user.currentUser
+  currentUser,
+  hidden
 });
 
 export default connect(mapStateToProps)(Header); // this is currying, we pass two function,

@@ -79,4 +79,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(App);
-// the first argument of the first function of connect() mapStateToProps is required, in case we are not going to use it but we need to use connect to use mapDispatchToProps so we can access some actions we have to set to null the first parameter
