@@ -1,10 +1,12 @@
+import { userActionTypes } from "./users.types";
+
 const INITIAL_STATE = {
   currentUser: null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "SET_CURRENT_USER":
+    case userActionTypes.SET_CURRENT_USER:
       return {
         // if the action type matches with one of the switch case we want to return a new object, with all the properties of the initial one spreaded and the property of interest for this case updated with the action.payload
         ...state,
