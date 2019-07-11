@@ -9,8 +9,8 @@ const CollectionPreview = ({ title, items }) => {
       <div className="preview">
         {items
           .filter((item, itemIndex) => itemIndex < 4) // we do the filter so we only show 4 items in the collection preview
-          .map(({ id, ...otherItemProps }) => {
-            return <CollectionItem key={id} id={id} {...otherItemProps} />;
+          .map(item => {
+            return <CollectionItem key={item.id} item={item} />;
           })}
       </div>
     </div>

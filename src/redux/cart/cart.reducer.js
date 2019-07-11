@@ -1,7 +1,9 @@
 import { cartActionTypes } from "./cart.types";
+import { addItemToCart } from "./cart.utils";
 
 const INITIAL_STATE = {
-  hidden: true
+  hidden: true,
+  cartItems: []
 };
 
 const cartReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +12,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         hidden: !state.hidden // this will return the opposite of hiddens current state
+      };
+    case cartActionTypes.ADD_ITEM:
+      return {
+        ...state,
+        cartItems: addItemToCart(state.cartItems, action.payload) // we use the function declared in cart.utils.js to update the cartItem store property with the new item or the new quantity of the alredy existing item
       };
 
     default:
