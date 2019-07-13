@@ -6,7 +6,7 @@ const MenuItem = ({ title, imageUrl, size, linkUrl, history, match }) => {
   return (
     <div
       className={`${size} menu-item`} // in case the item has the size large property in the state at directory we apply an additional classname so the appropiated style is applied
-      onClick={() => history.push(`${match.url}${linkUrl}`)} // we use match.url because we need to know first where we are, which was the url that make us render certain page and after we use the route we want to access /someMatchedUrl/linkUrl
+      onClick={() => history.push(`${match.url}${linkUrl}`)} // we use match.url because we need to know first where we are, which was the url that make us render certain page and after we use the route we want to access /someMatchedUrl/linkUrl | in this case match.url is just "/" we could just have written `/${linkUrl}`
     >
       <div
         className="background-image"

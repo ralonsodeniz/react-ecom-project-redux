@@ -4,7 +4,6 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   const existingCartItem = cartItems.find(
     cartItem => cartItem.id === cartItemToAdd.id
   ); // .find() will return the first item found in our array based in the condition we pass inside find. If it is not found it returns undefined
-  console.log(existingCartItem);
   if (existingCartItem) {
     // if the item to add already exists in the cartItems array we proceed to find it and to update the quantity
     return cartItems.map(
@@ -19,3 +18,37 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
 };
 
 // remember, with redux everytime we modify the state with our reducers we have to pass a new item to the store (object, array, string, whatever we want to update in the state) we cannot just modify the properties of an existing object because how React works, in order to rerender what is needed in the DOM it has to detect a new entry in the store
+
+export const clearItemFromCart = (cartItems, cartItemToClear) => {
+  return cartItems.filter(cartItem => cartItem.id !== cartItemToClear.id);
+};
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+  return cartItems.reduce((accumulator, cartItem) => {
+    let tempArray = accumulator;
+    if (cartItem.id === cartItemToRemove.id) {
+      if (cartItem.quantity > 1) {
+        tempArray.push({ ...cartItem, quantity: cartItem.quantity - 1 });
+        return tempArray;
+      }
+      return tempArray;
+    }
+    tempArray.push(cartItem);
+    return tempArray;
+  }, []);
+};
+
+// this is the same as above
+// export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+//   const existingCartItem = cartItems.find(
+//     cartItem => cartItem.id === cartItemToRemove.id
+//   );
+//   if (existingCartItem.quantity > 1) {
+//     return cartItems.map(cartItem =>
+//       cartItem.id === cartItemToRemove.id
+//         ? { ...cartItem, quantity: cartItem.quantity - 1 }
+//         : cartItem
+//     );
+//   }
+//   return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id);
+// };

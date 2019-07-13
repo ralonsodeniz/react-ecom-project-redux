@@ -4,11 +4,13 @@ import { ReactComponent as ShoppingIcon } from "../../assets/shopping-bag.svg";
 import { connect } from "react-redux";
 import { toggleCartHidden } from "../../redux/cart/cart.actions";
 import { selectCartItemsCount } from "../../redux/cart/cart.selectors"; // we import our selector
+import { createStructuredSelector } from "reselect";
 
 const CartIcon = (
   { toggleCartHidden, itemCount } // doing => () is the same than doing => {return()}
 ) => (
   <div className="cart-icon" onClick={toggleCartHidden}>
+    {/* {console.log("HEYYYYYYYY I'M BEING RE-RENDERED")} */}
     <ShoppingIcon className="shopping-icon" />
     <span className="item-count">{itemCount}</span>
   </div>
@@ -30,15 +32,17 @@ const mapDispatchToProps = dispatch => ({
 // the thing is that everytime any reducer updates we return a new object, redux recompose the entire state object and mapStateToProps is called every single time
 // because mapStateToProps is always being called everytime the store is update, even when the update does not concern to the properties we have selected, the reduce method is being computed everytime because reduce doesn't know that the cart items coming in might be the exact same
 // this is a performance problem because if the code we are executing inside the reduce is very demanding when are consuming a lot of time and resources everytime the store is updated
-// this derivates into another problem, if we return a new object to the props everytime we will end up rerendering the component each time the state changes
+// this derivates into another problem, re-rendering components when it is not needed
+// because of the way that connect() works, connect itself will actually do a shallow comparison of incoming state to see if anything changed. If we triger sign in, which is a change on the user reducer, our cart reducer actually doesn't change based on that shallow comparison. When we'll be able to see it is actually when we have multiple properties on the same reducer, and we start changing the props on that same reducer object
+// other components relying on those non-changing props don't need to re-render because they aren't changing, but since the reducer returns a whole new Object, the shallow comparison cannot detect that and every component that uses the the cart reducer will re-render, causing another performance issue
 // to avoid this we use a library called reselect that allows us to memoize the returning values for the same inputs
 // reselec allows us to write the selectors in such a way so that it knows if that the property that is pulling from the state and using are the same in the sense that the value has no change and the output of the selector has not change it want pass the new object to the component, it will pass the old value and the component wont be rerendered without need
 // because we might want to reuse our selectors we will change the folder structure and add a new file in the cart folder inside redux and add a file for the selectors
 // instead of the old code we are now going to use the memoized selectors to pass the map the state to props only when the state that affect us changes
 
-const mapStateToProps = state => {
-  return { itemCount: selectCartItemsCount(state) };
-};
+const mapStateToProps = createStructuredSelector({
+  itemCount: selectCartItemsCount
+});
 
 export default connect(
   mapStateToProps,

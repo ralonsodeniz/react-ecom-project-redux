@@ -5,8 +5,11 @@ import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndUpPage from "./pages/sign-in-and-up/sign-in-and-up.component";
+import CheckoutPage from "./pages/checkout/checkout.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils"; // we need this to make our app aware of a google auth process
 import { setCurrentUser } from "./redux/user/user.action"; // in order to dispatch the action and be able to use it as a prop we need to import it
+import { selectCurrentUser } from "./redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
 import "./App.css";
 
 class App extends Component {
@@ -58,15 +61,15 @@ class App extends Component {
           />
           {/* what we have done here is to conditionally render one of two components depending if currentUser exists or not */}
           {/* <Redirect> router component allow us to change the path of a route to a new one so we can avoid to show sign in page when a user is logged in */}
+          <Route exact path="/checkout" component={CheckoutPage} />
         </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  // we are destructuring the root reducer so we dont have to do state.user.currentUser
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({

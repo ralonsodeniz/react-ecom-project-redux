@@ -16,3 +16,18 @@ export const selectCartItemsCount = createSelector(
       0
     )
 ); // this returns the total quantity of the cartItems but using memoization
+
+export const selectCartHidden = createSelector(
+  [selectCart],
+  cart => cart.hidden
+);
+
+export const selectCartItemsTotal = createSelector(
+  [selectCartItems],
+  cartItems =>
+    cartItems.reduce(
+      (accumulator, cartItem) =>
+        accumulator + cartItem.price * cartItem.quantity,
+      0
+    )
+);
