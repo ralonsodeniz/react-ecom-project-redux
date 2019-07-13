@@ -4,7 +4,8 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter is going to wrap our application and gives it all of the functionalities of routing the library provides
 // Provider is what gives to our application access to not only the store but also to the reducers we are going to set up
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react"; // this is the component we need to give our app access to persistant store
+import { store, persistor } from "./redux/store"; // we import also the persistor from store not just the store
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -15,7 +16,10 @@ ReactDOM.render(
   <Provider store={store}>
     {/* we need to pass the store as Provider's props so it is available to all the app wrapped between the Provider */}
     <BrowserRouter>
-      <App />
+      {/* we wrap our app in the PersistGate component and pass to it the persistor */}
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
     </BrowserRouter>
   </Provider>,
   document.getElementById("root")
