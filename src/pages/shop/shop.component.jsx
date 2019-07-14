@@ -1,25 +1,18 @@
-import React, { Component } from "react";
-import SHOP_DATA from "./shop.data";
-import CollectionPreview from "../../components/collection-preview/collection-preview.component";
+import React from "react";
+import { Route } from "react-router-dom";
+import CollectionsOverview from "../../components/collections-oeverview/collections-overview.component";
+import CollectionPage from "../collection/collection.component";
 
-class ShopPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collections: SHOP_DATA
-    };
-  }
-
-  render() {
-    const { collections } = this.state;
-    return (
-      <div className="shop-page">
-        {collections.map(({ id, ...otherColletionProps }) => {
-          return <CollectionPreview key={id} {...otherColletionProps} />;
-        })}
-      </div>
-    );
-  }
-}
+// since shop component is already a routed component we have access to router props. Remember that if the component is not routed we have to use withRouter HOC to have access to them
+const ShopPage = (
+  { match } // match.patch is the exact route we are
+) => (
+  <div className="shop-page">
+    <Route exact path={`${match.path}`} component={CollectionsOverview} />
+    <Route path={`${match.path}/:collectionId`} component={CollectionPage} />
+    {/* /:collectionId means what goes before the match.path, in this case what is next to /shop/ */}
+    {/* thanks to this in the CollectionPage we will have access to a new object inside match, params, with will have a property called collectionId (what goes after the : is a param) which value would be the route after /shop (match.path) */}
+  </div>
+);
 
 export default ShopPage;
