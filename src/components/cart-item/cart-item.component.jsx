@@ -8,9 +8,8 @@ const CartItem = ({ item: { imageUrl, price, name, quantity } }) => (
     <div className="item-details">
       <span className="name">{name}</span>
       <span className="price">
-        {quantity} x ${price}
+        {quantity} x {price}€
       </span>
-      {/* $ sign here is to actually show the $ sign is nothing to do with js code */}
     </div>
   </div>
 );
