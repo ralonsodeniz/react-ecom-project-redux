@@ -3,8 +3,12 @@ import logger from "redux-logger"; // this is a middleware that is nice to use w
 import rootReducer from "./root-reducer"; // we need the root reducer to create the store
 import { persistStore } from "redux-persist"; // this allows our browser to cache our store depending on the config options we set
 
-const middlewares = [logger]; // we create an array with all the middlewares we want to use so then we can spread this array as the parameter of applyMiddleware method so each of them is passed as a parameter.
+const middlewares = []; // we create an array with all the middlewares we want to use so then we can spread this array as the parameter of applyMiddleware method so each of them is passed as a parameter.
 // this makes it easier to add new middlewares just by adding them to the array
+// in our case, for logger, since we only want it to be applied in development enviorment we push it conditionally
+if (process.env.NODE_ENV === "development") {
+  middlewares.push(logger);
+}
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 // we create a persistor, which calls the persistStore() passing our store as parameter
